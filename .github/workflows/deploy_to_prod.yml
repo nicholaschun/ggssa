@@ -1,35 +1,27 @@
-name: Deploy to GGSSA App
-
+name: Deploy GGSSA APP master
 on:
   push:
     branches:
-      - main
+    - main
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout repository
+
+    - name: Checkout source code
       uses: actions/checkout@v2
 
-    - name: Configure SSH
-      run: |
-        mkdir -p ~/.ssh/
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H ${{ secrets.EC2_PUBLIC_IP }} >> ~/.ssh/known_hosts
+    - name: Generate deployment package
+      run: zip -r deploy.zip . -x '*.git*'
 
-    - name: Install PHP and dependencies
-      run: sudo apt-get update && sudo apt-get install php php-mbstring php-xml
-
-    - name: Install Composer dependencies
-      run: composer install --no-interaction --prefer-dist --optimize-autoloader
-
-    - name: Deploy to lightsail
-      run: |
-        rsync -avz --delete --exclude-from=".rsyncignore" -e "ssh -i ~/.ssh/id_rsa" ./ ubuntu@${{ secrets.EC2_PUBLIC_IP }}:/var/www/html
-        ssh -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_PUBLIC_IP }} 'cd /var/www/html && composer install --no-interaction --prefer-dist --optimize-autoloader && php artisan migrate --force && php artisan config:cache && php artisan route:cache'
-
-    - name: Clear SSH key
-      run: rm ~/.ssh/id_rsa
+    - name: Deploy to EB
+      uses: einaregilsson/beanstalk-deploy@v21
+      with:
+        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        application_name: ggssa-dashboard
+        environment_name: Ggssa-dashboard-prod
+        version_label: ${{ github.sha }}
+        region: us-east-1
+        deployment_package: ${{ github.sha }}.zip
