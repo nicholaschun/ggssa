@@ -24,4 +24,4 @@ jobs:
         environment_name: Ggssa-dashboard-prod
         version_label: ${{ github.sha }}
         region: us-east-1
-        deployment_package: ${{ github.sha }}.zip
+        deployment_package: deploy.zip
