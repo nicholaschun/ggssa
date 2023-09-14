@@ -12,6 +12,21 @@ jobs:
     - name: Checkout source code
       uses: actions/checkout@v2
 
+    - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-composer-${{ hashFiles('composer.json') }}
+
+    - name: Install Composer dependencies
+      run: composer install --prefer-dist --no-interaction --no-suggest
+
+    - name: Install NPM dependencies
+      run: yarn install
+
+    - name: Compile assets
+      run: yarn build
+
     - name: Generate deployment package
       run: zip -r deploy.zip . -x '*.git*'
 
