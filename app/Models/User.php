@@ -11,6 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 
+
 class User extends Authenticatable implements FilamentUser
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -23,6 +24,26 @@ class User extends Authenticatable implements FilamentUser
     protected $fillable = [
         'name',
         'email',
+        'title',
+        'first_name',
+        'middle_name',
+        'last_name',
+        'gender',
+        'employment_date',
+        'join_ggssa_date',
+        'gngc_staff_number',
+        'department',
+        'gngc_job_title',
+        'workstation',
+        'date_of_birth',
+        'contact_number',
+        'whatsapp_number',
+        'gngc_email',
+        'marital_status',
+        'number_of_children',
+        'religion',
+        'status',
+        'emergency_contact',
         'password',
     ];
 
