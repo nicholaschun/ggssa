@@ -12,6 +12,7 @@ class Issues extends Model
     protected $fillable = [
         'name',
         'email',
-        'message'
+        'message',
+        'user_id'
     ];
 }

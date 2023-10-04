@@ -26,7 +26,7 @@ class CreateIssues extends CreateRecord
     }
     protected function getRedirectUrl(): string
     {
-        return $this->getResource()::getUrl('/');
+        return $this->getResource()::getUrl('index');
     }
     public function form(Form $form): Form
     {
@@ -37,4 +37,10 @@ class CreateIssues extends CreateRecord
                   Textarea::make('message')->required(),
               ]);
       }
+
+      protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $data['user_id'] = auth()->id();
+        return $data;
+    }
 }
