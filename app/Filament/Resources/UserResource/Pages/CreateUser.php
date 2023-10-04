@@ -23,12 +23,12 @@ class CreateUser extends CreateRecord
             ->body('Member has been created successfully.');
     }
     protected function getRedirectUrl(): string
-{
-    return $this->getResource()::getUrl('index');
-}
+    {
+        return $this->getResource()::getUrl('index');
+    }
 
     public function form(Form $form): Form
-  {
+    {
         return $form
             ->schema([
                 Select::make('title')
@@ -53,13 +53,14 @@ class CreateUser extends CreateRecord
                 TextInput::make('gngc_email')->required(),
                 TextInput::make('marital_status')->required(),
                 TextInput::make('number_of_children')->required(),
+                TextInput::make('date_of_birth')->required(),
                 TextInput::make('religion')->required(),
                 TextInput::make('emergency_contact')->required()
             ]);
-    }  
+    }
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['password'] = $data['first_name'] . '@1234';
+        $data['password'] = bcrypt($data['first_name'] . '@1234');
         $data['status'] = true;
         $data['email'] = $data['gngc_email'];
         $data['name'] = $data['first_name'] . ' ' . $data['middle_name'] . ' ' . $data['last_name'];

@@ -8,6 +8,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 
 class UserResource extends Resource
@@ -30,14 +31,16 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')->label('id'),
-                Tables\Columns\TextColumn::make('name')->label('Full Name'),
-                Tables\Columns\TextColumn::make('gender')->label('Gender'),
+                Tables\Columns\TextColumn::make('id')->label("Member Id")->getStateUsing(function (Model $record) :string {
+                    return 'GGSSA-'. str_pad($record->id, 5, '0', STR_PAD_LEFT);
+                })->searchable(),
+                Tables\Columns\TextColumn::make('name')->label('Full Name')->searchable(),
+                // Tables\Columns\TextColumn::make('gender')->label('Gender'),
                 Tables\Columns\TextColumn::make('employment_date')->date()->label('Employment Date'),
                 Tables\Columns\TextColumn::make('gngc_staff_number')->label('Staff Number'),
                 Tables\Columns\TextColumn::make('department')->label('Department'),
                 Tables\Columns\TextColumn::make('gngc_job_title')->label('Job Title'),
-                Tables\Columns\TextColumn::make('date_of_birth')->label('Birthday'),
+                // Tables\Columns\TextColumn::make('date_of_birth')->label('Birthday'),
                 Tables\Columns\TextColumn::make('contact_number')->label('Contact Number'),
             ])
             ->filters([

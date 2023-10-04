@@ -26,6 +26,7 @@ class EditUser extends EditRecord
     {
           return $form
               ->schema([
+                TextInput::make('id')->disabled()->label('Member Id'),
                   Select::make('title')
                       ->required()
                       ->options([
@@ -52,4 +53,10 @@ class EditUser extends EditRecord
                   TextInput::make('emergency_contact')->required()
               ]);
       }  
+
+protected function mutateFormDataBeforeFill(array $data): array
+{
+    $data['id'] = 'GGSSA-'. str_pad($data['id'], 5, '0', STR_PAD_LEFT);
+    return $data;
+}
 }
