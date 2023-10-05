@@ -17,7 +17,7 @@ class IssuesResource extends Resource
 {
     protected static ?string $model = Issues::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-oval-left-ellipsis';
 
     public static function form(Form $form): Form
     {
