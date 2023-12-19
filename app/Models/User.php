@@ -71,4 +71,9 @@ class User extends Authenticatable implements FilamentUser
     {
         return str_ends_with($this->email, '@gmail.com') && $this->hasVerifiedEmail();
     }
+
+    public function payments()
+    {
+        return $this->hasMany('App\Payment', 'gngc_staff_number_key', 'gngc_staff_number');
+    }
 }

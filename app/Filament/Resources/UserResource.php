@@ -32,11 +32,11 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id')->label("Member Id")->getStateUsing(function (Model $record) :string {
-                    return 'GGSSA-'. str_pad($record->id, 5, '0', STR_PAD_LEFT);
+                    return 'GGSSA-'. str_pad($record->id, 6, '0', STR_PAD_LEFT);
                 })->searchable(),
                 Tables\Columns\TextColumn::make('name')->label('Full Name')->searchable(),
                 // Tables\Columns\TextColumn::make('gender')->label('Gender'),
-                Tables\Columns\TextColumn::make('employment_date')->date()->label('Employment Date'),
+                Tables\Columns\TextColumn::make('employment_date')->label('Employment Date'),
                 Tables\Columns\TextColumn::make('gngc_staff_number')->label('Staff Number'),
                 Tables\Columns\TextColumn::make('department')->label('Department'),
                 Tables\Columns\TextColumn::make('gngc_job_title')->label('Job Title'),
@@ -47,6 +47,7 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ]);
             // ->bulkActions([
@@ -69,6 +70,7 @@ class UserResource extends Resource
             'index' => Pages\ListUsers::route('/'),
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
+            'view' => Pages\ViewUser::route('/{record}')
         ];
     }    
 }

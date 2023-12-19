@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ecbc583b9d1418708da2d871ab7be9fb",
+    "content-hash": "a75b7400205527ada2c6072ad85c4ee2",
     "packages": [
         {
             "name": "althinect/filament-spatie-roles-permissions",
@@ -2261,16 +2261,16 @@
         },
         {
             "name": "konnco/filament-import",
-            "version": "1.6.1",
+            "version": "2.0.0-beta",
             "source": {
                 "type": "git",
                 "url": "https://github.com/konnco/filament-import.git",
-                "reference": "809eb090761b9722d859d3164d329d0937ef8442"
+                "reference": "93f66dfb6dc98c547ce94e0fdf05435441e06471"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/konnco/filament-import/zipball/809eb090761b9722d859d3164d329d0937ef8442",
-                "reference": "809eb090761b9722d859d3164d329d0937ef8442",
+                "url": "https://api.github.com/repos/konnco/filament-import/zipball/93f66dfb6dc98c547ce94e0fdf05435441e06471",
+                "reference": "93f66dfb6dc98c547ce94e0fdf05435441e06471",
                 "shasum": ""
             },
             "require": {
@@ -2327,9 +2327,9 @@
             ],
             "support": {
                 "issues": "https://github.com/konnco/filament-import/issues",
-                "source": "https://github.com/konnco/filament-import/tree/1.6.1"
+                "source": "https://github.com/konnco/filament-import/tree/2.0.0-beta"
             },
-            "time": "2023-08-28T13:56:51+00:00"
+            "time": "2023-08-23T16:12:46+00:00"
         },
         {
             "name": "laravel/framework",
@@ -10567,8 +10567,10 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": [],
+    "minimum-stability": "beta",
+    "stability-flags": {
+        "konnco/filament-import": 10
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
