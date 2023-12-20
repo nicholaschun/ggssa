@@ -21,11 +21,15 @@ class ListPayments extends ListRecords
             ->handleBlankRows(true)
             ->fields([
                 ImportField::make('gngc_staff_number_key')->label('GNGC Staff Number')->required(),
-                ImportField::make('month')->label('Month')->required(),
-                ImportField::make('year')->label('Year')->required(),
+                ImportField::make('date')->label('Date')->required(),
                 ImportField::make('amount')->label('Amount')->required(),
             ])
             ->label('Import Excel')
+            ->mutateBeforeCreate(function($row) {
+                $row['year'] = date('y', strtotime($row['date']));
+                $row['month'] = date('m', strtotime($row['date']));
+                return $row;
+            })
         ];
     }
 }

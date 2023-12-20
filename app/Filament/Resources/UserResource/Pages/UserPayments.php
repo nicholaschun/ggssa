@@ -3,51 +3,50 @@
 namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Resources\UserResource;
-use Filament\Actions;
-use Filament\Resources\Pages\ViewRecord;
-use Filament\Notifications\Notification;
-use Filament\Forms\Components\TextInput;
+use Filament\Resources\Pages\Page;
+use Filament\Resources\Pages\Concerns\InteractsWithRecord;
+use Filament\Tables\Concerns\InteractsWithTable;
+use Filament\Tables\Table;
+use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Form;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
-
-use Filament\Resources\Tables\Columns;
-use Filament\Resources\Tables\Filter;
-use Filament\Tables;
-use Filament\Tables\Table;
-use Filament\Tables\Concerns\InteractsWithTable;
+use Filament\Forms\Components\TextInput;
 use Filament\Tables\Contracts\HasTable;
-use Filament\Resources\Pages\Concerns\InteractsWithRecord;
 
 
-class ViewUser extends ViewRecord implements HasTable
+
+class UserPayments extends Page implements HasTable
 {
-  use InteractsWithTable;
-  // use InteractsWithRecord;
+
+    use InteractsWithRecord;
+    use InteractsWithTable;
 
 
     protected static string $resource = UserResource::class;
+
     protected static string $view = 'filament.resources.user-resource.pages.user-payments';
 
-    // public string $staffid;
+    public function mount(int | string $record)
+    {
+        // $this->form->fill();
+        $this->record = $this->resolveRecord($record);
+        static::authorizeResourceAccess();
 
-    // public function mount(int | string $record):void
-    // {
-    //     // $this->form->fill();
-    //     $this->record = $this->resolveRecord($record);
-    //     static::authorizeResourceAccess();
+    }
 
-    // }
-    public function table(Table $table): Table
+
+    public static function table(Table $table): Table
     {
         return $table
-        ->query(\App\Models\Payment::query()->where('gngc_staff_number_key', $this->record['gngc_staff_number']))
-        ->columns([
-          Tables\Columns\TextColumn::make('gngc_staff_number_key')->label('Staff Number')->searchable(),
-          Tables\Columns\TextColumn::make('amount')->label('Amount'),
-          Tables\Columns\TextColumn::make('month')->label('Month')->searchable(),
-          Tables\Columns\TextColumn::make('year')->label('Year')->searchable()
-        ]);
+            ->query(\App\Models\Payment::query())
+            ->columns([
+                TextColumn::make('gngc_staff_number_key')->label('Staff Number'),
+            ])
+            ->filters([
+                //
+            ]);
     }
 
     public function form(Form $form): Form
@@ -79,11 +78,9 @@ class ViewUser extends ViewRecord implements HasTable
                   TextInput::make('number_of_children')->required(),
                   TextInput::make('religion')->required(),
                   TextInput::make('emergency_contact')->required()
-              ])->statePath('data')
-              ;
+              ]);
       }  
-
-protected function mutateFormDataBeforeFill(array $data): array
+      protected function mutateFormDataBeforeFill(array $data): array
 {
     $data['id'] = 'GGSSA-'. str_pad($data['id'], 6, '0', STR_PAD_LEFT);
     return $data;

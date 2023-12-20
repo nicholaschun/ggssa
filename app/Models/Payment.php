@@ -15,4 +15,9 @@ class Payment extends Model
         'year',
         'amount'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo('App\Payment', 'gngc_staff_number', 'gngc_staff_number_key');
+    }
 }
