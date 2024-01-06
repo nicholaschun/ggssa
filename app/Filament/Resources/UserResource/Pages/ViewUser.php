@@ -83,6 +83,18 @@ class ViewUser extends ViewRecord implements HasTable
               ;
       }  
 
+      
+
+      public function getViewData(): array
+      {
+        return [
+          'id' => 'GGSSA',
+            'custom_content' => 'Your content here'
+        ];
+        // $record['id'] = 'GGSSA-'. str_pad($record['id'], 6, '0', STR_PAD_LEFT);
+    // return $record;
+      }
+
 protected function mutateFormDataBeforeFill(array $data): array
 {
     $data['id'] = 'GGSSA-'. str_pad($data['id'], 6, '0', STR_PAD_LEFT);
