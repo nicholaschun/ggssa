@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+use App\Policies\PermissionPolicy;
+use App\Policies\RolePolicy;
+use Filament\Facades\Filament;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -13,7 +16,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        //
+       'Spatie\Permission\Models\Role' =>  RolePolicy::class,
+        'Spatie\Permission\Models\Permission' => PermissionPolicy::class
     ];
 
     /**
@@ -21,6 +25,5 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
     }
 }

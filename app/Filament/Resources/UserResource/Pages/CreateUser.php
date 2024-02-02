@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Resources\UserResource;
+use App\Models\User;
 use Filament\Resources\Pages\CreateRecord;
 use Filament\Notifications\Notification;
 use Filament\Forms\Components\TextInput;
@@ -63,7 +64,15 @@ class CreateUser extends CreateRecord
         $data['password'] = bcrypt($data['first_name'] . '@1234');
         $data['status'] = true;
         $data['email'] = $data['gngc_email'];
+        $data['profile_set'] = false;
+        $data['profile_photo'] = 'https://ggssa-public.s3.amazonaws.com/image-placeholder.jpg';
         $data['name'] = $data['first_name'] . ' ' . $data['middle_name'] . ' ' . $data['last_name'];
         return $data;
     }
+
+    protected function afterCreate(): void
+    {
+        $this->record->assignRole('member');
+    }
+
 }

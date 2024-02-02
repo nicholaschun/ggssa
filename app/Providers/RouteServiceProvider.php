@@ -7,6 +7,8 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use Filament\Http\Responses\Auth\Contracts\LoginResponse as LoginResponseContract;
+
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -36,5 +38,8 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
         });
+
+        $this->app->bind(LoginResponseContract::class, \App\Http\Responses\LoginResponse::class);
+
     }
 }

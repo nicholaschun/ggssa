@@ -62,5 +62,14 @@ class PaymentResource extends Resource
             'index' => Pages\ListPayments::route('/'),
             'create' => Pages\CreatePayment::route('/create'),
         ];
-    }    
+    } 
+    
+    public static function getEloquentQuery(): Builder
+    {
+        if(auth()->user()->hasRole('member')) {
+            return parent::getEloquentQuery()->where('gngc_staff_number_key', auth()->user()->gngc_staff_number);
+        }
+        return parent::getEloquentQuery();
+        
+    }
 }

@@ -2,9 +2,13 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Settings;
+use App\Http\Middleware\RedirectToSettings;
+use App\Models\User;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\MenuItem;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -16,14 +20,24 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Althinect\FilamentSpatieRolesPermissions\FilamentSpatieRolesPermissionsPlugin;
 
-
 class AdminPanelProvider extends PanelProvider
 {
+
+
+
     public function panel(Panel $panel): Panel
     {
+        // dd(Auth::user()->hasRole('super-admin'));
+        // $user = true;
+        // dd($user);
+        // if($user){
+        //     config('filament-spatie-roles-permissions.should_register_on_navigation.permissions', true);
+        //     config('filament-spatie-roles-permissions.should_register_on_navigation.roles', false);
+        // }
         return $panel
             ->default()
             ->id('admin')
@@ -54,10 +68,14 @@ class AdminPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
             ])
             ->authMiddleware([
-                Authenticate::class,
+                Authenticate::class
             ])
             ->viteTheme('resources/css/filament/admin/theme.css')
-            ->plugin(FilamentSpatieRolesPermissionsPlugin::make());
+            ->plugin(FilamentSpatieRolesPermissionsPlugin::make())
+            ->profile()
+            ->userMenuItems([
+                'Settings' => MenuItem::make()->url(fn ():string => Settings::getUrl())
+            ]);
             
     }
 }

@@ -1,5 +1,4 @@
 <?php
-
 return [
 
     'preload_roles' => true,
@@ -14,7 +13,7 @@ return [
      * Set to false to remove from navigation
      */
     'should_register_on_navigation' => [
-        'permissions' => true,
+        'permissions' =>  true,
         'roles' => true,
     ],
 

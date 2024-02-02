@@ -42,6 +42,7 @@ class ListUsers extends ListRecords
                     ImportField::make('emergency_contact')->label('Emergency Contact')
                 ])
                 ->label('Import Excel')
+                ->visible(auth()->user()->can('add-members'))
                 ->mutateBeforeCreate(function($row) {
                     $middleName = isset($row['middle_name']) ? $row['middle_name'] : "" ;
                     $row['password'] = bcrypt($row['first_name'] . '@1234');

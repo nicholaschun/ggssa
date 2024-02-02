@@ -3,18 +3,27 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Filament\Facades\Filament;
+use Filament\Models\Contracts\HasAvatar;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
+use App\Traits\HasProfilePhoto;
+use Spatie\Permission\Traits\HasRoles;
 
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, HasAvatar
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasProfilePhoto, HasRoles;
+
+    // protected $appends = [
+    //     'profile_photo',
+    // ];
 
     /**
      * The attributes that are mass assignable.
@@ -43,6 +52,8 @@ class User extends Authenticatable implements FilamentUser
         'number_of_children',
         'religion',
         'status',
+        'profile_set',
+        'profile_photo',
         'emergency_contact',
         'password',
     ];
@@ -78,4 +89,18 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->hasMany('App\Payment', 'gngc_staff_number_key', 'gngc_staff_number');
     }
+
+    public function getFilamentAvatarUrl(): ?string
+    {
+        return $this->profile_photo;
+    }
+
+    public function isSuperAdmin(): bool
+    {
+        return Auth::user()->hasRole('super-admin');
+        // dd(self::);
+    //    return  self::hasRole('super-admin');
+    }
+
+ 
 }

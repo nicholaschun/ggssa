@@ -32,7 +32,9 @@ return new class extends Migration
             $table->string('marital_status')->nullable();
             $table->integer('number_of_children')->nullable();
             $table->string('religion')->nullable();
+            $table->string('profile_photo')->nullable();
             $table->boolean('status')->nullable();
+            $table->boolean('profile_set')->nullable();
             $table->string('emergency_contact')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
