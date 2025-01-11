@@ -54,14 +54,8 @@ class ViewUser extends ViewRecord implements HasTable
     {
           return $form
               ->schema([
-                TextInput::make('id')->disabled()->label('Member Id'),
-                  Select::make('title')
-                      ->required()
-                      ->options([
-                          'Mr.' => 'Mr.',
-                          'Mrs' => 'Mrs',
-                          'Miss' => 'Miss',
-                      ]),
+                  TextInput::make('ggssa_member_id')->disabled()->label('Member Id'),
+                  TextInput::make('title')->required(),
                   TextInput::make('first_name')->required(),
                   TextInput::make('middle_name'),
                   TextInput::make('last_name')->required(),
@@ -78,7 +72,13 @@ class ViewUser extends ViewRecord implements HasTable
                   TextInput::make('marital_status')->required(),
                   TextInput::make('number_of_children')->required(),
                   TextInput::make('religion')->required(),
-                  TextInput::make('emergency_contact')->required()
+                  TextInput::make('emergency_contact')->required(),
+                  TextInput::make('emergency_contact_name'),
+                  TextInput::make('relationship_with_emergency_contact'),
+                  TextInput::make('next_of_kin'),
+                  TextInput::make('next_of_kin_contact'),
+                  TextInput::make('relationship_with_next_of_kin')
+
               ])->statePath('data')
               ;
       }  
@@ -97,7 +97,7 @@ class ViewUser extends ViewRecord implements HasTable
 
 protected function mutateFormDataBeforeFill(array $data): array
 {
-    $data['id'] = 'GGSSA-'. str_pad($data['id'], 6, '0', STR_PAD_LEFT);
+    $data['ggssa_member_id'] = 'GGSSA-'. $data['ggssa_member_id'];
     return $data;
 }
 }

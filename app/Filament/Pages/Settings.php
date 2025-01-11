@@ -28,6 +28,7 @@ class Settings extends Page implements HasForms
     public array $updateProfileInformationState = [];
 
     protected static ?string $navigationIcon = 'heroicon-o-cog-6-tooth';
+    // public ?string $profile_photo; 
 
     protected static string $view = 'filament.pages.settings';
     protected static bool $shouldRegisterNavigation = true;
@@ -45,7 +46,7 @@ class Settings extends Page implements HasForms
     {
         return [
             'editSettingsForm',
-            'editPasswordForm',
+            'editPasswordForm', 
         ];
     }
 
@@ -53,6 +54,7 @@ class Settings extends Page implements HasForms
     {
         return $form->schema([
             // 'updateProfileInformationForm' => $this->makeForm(),
+            
             Section::make('Profile Information')
             ->description('Update your account\'s profile information and email address.')
             ->schema([
@@ -62,13 +64,11 @@ class Settings extends Page implements HasForms
                 ->disk('s3')
                 ->directory('profile-photo')
                 ->rules(['nullable', 'mimes:jpg,jpeg,png', 'max:1024']),
-                // TextInput::make('email')
-                // ->email()
-                // ->required()
             ])
-            ->model(User::class)
+            ->model($this->getUser())
             ->statePath('')
         ]);
+        return $form;
     }
 
     public function editPasswordForm(Form $form): Form
@@ -120,13 +120,19 @@ class Settings extends Page implements HasForms
     public function updateSettings(): void
     {
         $data = $this->editSettingsForm->getState();
-        $this->handleRecordUpdate($this->getUser(), $data);
-        $this->sendSuccessNotification(); 
+        $user = $this->getUser();
+        dd($user);
+        // $this->handleRecordUpdate($this->getUser(), $data);
+        // $this->sendSuccessNotification(); 
     }
+
     public function updatePassword(): void
     {
         $data = $this->editPasswordForm->getState();
         $this->handleRecordUpdate($this->getUser(), $data);
+        $user = $this->getUser();
+        $user->profile_set = true;
+        $user->save();
         if (request()->hasSession() && array_key_exists('password', $data)) {
             request()->session()->put(['password_hash_' . Filament::getAuthGuard() => $data['password']]);
         }
@@ -154,7 +160,7 @@ class Settings extends Page implements HasForms
         return [
             Action::make('updatePasswordAction')
                 ->label('Update Password')
-                ->submit('editPasswordForm'),
+                ->submit('editPasswordForm')
         ];
     }
 

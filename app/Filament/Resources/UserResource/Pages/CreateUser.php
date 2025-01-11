@@ -32,13 +32,7 @@ class CreateUser extends CreateRecord
     {
         return $form
             ->schema([
-                Select::make('title')
-                    ->required()
-                    ->options([
-                        'Mr.' => 'Mr.',
-                        'Mrs' => 'Mrs',
-                        'Miss' => 'Miss',
-                    ]),
+                TextInput::make('title')->required(),
                 TextInput::make('first_name')->required(),
                 TextInput::make('middle_name'),
                 TextInput::make('last_name')->required(),
@@ -56,17 +50,29 @@ class CreateUser extends CreateRecord
                 TextInput::make('number_of_children')->required(),
                 TextInput::make('date_of_birth')->required(),
                 TextInput::make('religion')->required(),
-                TextInput::make('emergency_contact')->required()
+                TextInput::make('emergency_contact')->required(),
+                TextInput::make('emergency_contact_name'),
+                TextInput::make('relationship_with_emergency_contact'),
+                TextInput::make('next_of_kin'),
+                TextInput::make('next_of_kin_contact'),
+                TextInput::make('relationship_with_next_of_kin')
             ]);
     }
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['password'] = bcrypt($data['first_name'] . '@1234');
+        $data['password'] = bcrypt(strtolower($data['first_name']) . '@1234');
         $data['status'] = true;
         $data['email'] = $data['gngc_email'];
         $data['profile_set'] = false;
-        $data['profile_photo'] = 'https://ggssa-public.s3.amazonaws.com/image-placeholder.jpg';
+        $data['profile_photo'] = 'https://ggssa-public.s3.us-east-1.amazonaws.com/image-placeholder.jpg';
         $data['name'] = $data['first_name'] . ' ' . $data['middle_name'] . ' ' . $data['last_name'];
+
+        $lastRecord = User::latest()->first();
+        $nextNumber = $lastRecord ? (int)$lastRecord->ggssa_member_id + 1 : 1;
+
+        $data['ggssa_member_id'] = str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
+        $data['email_verified_at'] = date('Y-m-d H:i:s');
+        $data['password_changed'] = false;
         return $data;
     }
 

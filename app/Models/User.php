@@ -56,6 +56,14 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         'profile_photo',
         'emergency_contact',
         'password',
+        'emergency_contact_name',
+        'relationship_with_emergency_contact',
+        'next_of_kin',
+        'next_of_kin_contact',
+        'relationship_with_next_of_kin',
+        'ggssa_member_id',
+        'email_verified_at',
+        'password_changed'
     ];
 
     /**

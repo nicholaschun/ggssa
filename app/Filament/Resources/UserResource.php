@@ -31,12 +31,12 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')->label("Member Id")->getStateUsing(function (Model $record) :string {
-                    return 'GGSSA-'. str_pad($record->id, 6, '0', STR_PAD_LEFT);
+                Tables\Columns\TextColumn::make('ggssa_member_id')->label("Member Id")->getStateUsing(function (Model $record) :string {
+                    return 'GGSSA-'. str_pad($record->ggssa_member_id, 4, '0', STR_PAD_LEFT);
                 })->searchable(),
                 Tables\Columns\TextColumn::make('name')->label('Full Name')->searchable(),
                 // Tables\Columns\TextColumn::make('gender')->label('Gender'),
-                Tables\Columns\TextColumn::make('employment_date')->label('Employment Date'),
+                // Tables\Columns\TextColumn::make('employment_date')->label('Employment Date'),
                 Tables\Columns\TextColumn::make('gngc_staff_number')->label('Staff Number'),
                 Tables\Columns\TextColumn::make('department')->label('Department'),
                 Tables\Columns\TextColumn::make('gngc_job_title')->label('Job Title'),
