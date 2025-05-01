@@ -67,6 +67,10 @@ class ListUsers extends ListRecords
                     $data['password_changed'] = false;
                     return $data;
                 })
+                ->mutateAfterCreate(function(User $user) {
+                    $user->assignRole($memberRole);
+                    
+                })
               
         ];
     }
