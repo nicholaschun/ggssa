@@ -121,7 +121,6 @@ class Settings extends Page implements HasForms
     {
         $data = $this->editSettingsForm->getState();
         $user = $this->getUser();
-        dd($user);
         // $this->handleRecordUpdate($this->getUser(), $data);
         // $this->sendSuccessNotification(); 
     }

@@ -60,7 +60,7 @@ class CreateUser extends CreateRecord
     }
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['password'] = bcrypt(strtolower($data['first_name']) . '@1234');
+        $data['password'] = bcrypt('default_@1234');
         $data['status'] = true;
         $data['email'] = $data['gngc_email'];
         $data['profile_set'] = false;
