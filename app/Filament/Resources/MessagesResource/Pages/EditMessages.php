@@ -61,13 +61,24 @@ class EditMessages extends EditRecord
     {
         // improve this to use a queue
         foreach ( User::all()->where('status', 1) as $user) {
+            $contactNumber = $user->contact_number;
+        
+        // If contact number contains multiple numbers separated by slash, take the first one
+        if (strpos($contactNumber, '/') !== false) {
+            $contactNumber = explode('/', $contactNumber)[0];
+        }
+        
+        // Add leading zero if not present
+        if (strlen($contactNumber) > 0 && $contactNumber[0] !== '0') {
+            $contactNumber = '0' . $contactNumber;
+        }
             $basicToken = base64_encode(config('sms.hubtel.username').':'.config('sms.hubtel.password'));
             Http::withHeaders([
                 'Content-Type' => 'application/json',
                 'Authorization' => 'Basic '. $basicToken
             ])->post(config('sms.hubtel.url'), [
                 'from' => config('sms.hubtel.senderId'),
-                'to' => $user->contact_number,
+                'to' => $contactNumber,
                 'content' => $record->message
             ]);
         }
