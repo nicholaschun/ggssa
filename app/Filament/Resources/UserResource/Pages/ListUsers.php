@@ -68,7 +68,7 @@ class ListUsers extends ListRecords
                     return $data;
                 })
                 ->mutateAfterCreate(function(User $user) {
-                    $user->assignRole($memberRole);
+                    $user->assignRole('member');
                     
                 })
               
